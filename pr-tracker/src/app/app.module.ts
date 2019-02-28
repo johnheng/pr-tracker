@@ -10,6 +10,10 @@ import { PopupComponent } from './popup/popup.component';
 
 import { MaterialModule } from './shared/material.module';
 import { TokenComponent } from './token/token.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { GithubService } from './services/github.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './auth.service';
 
 @NgModule({
   declarations: [
@@ -23,9 +27,17 @@ import { TokenComponent } from './token/token.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [GithubService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

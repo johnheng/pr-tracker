@@ -1,3 +1,17 @@
-<p>
-  homepage works!
-</p>
+<mat-card>
+  <div>
+    <h1>{{selectedRepo}} PRs</h1>
+    <div *ngFor="let pull of pulls">
+      #{{pull.number}} - {{pull.title}} - Created {{pull.created_at | date}}
+    </div>
+  </div>
+</mat-card>
+
+<mat-card>
+  <div>
+    <h1>Repos</h1>
+    <div *ngFor="let repo of repos" (click)="selectRepo(repo.name)">
+      {{repo.name}}
+    </div>
+  </div>
+</mat-card>

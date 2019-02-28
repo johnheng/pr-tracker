@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-token',
@@ -7,17 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TokenComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
-  authToken: string;
+  token: FormControl = new FormControl();
 
   ngOnInit() {
 
   }
 
   submit() {
-    if (this.authToken != null) {
-      chrome.storage.local.set({ "token": this.authToken })
+    console.log(this.token.value);
+    if (this.token.value != null) {
+      localStorage.setItem("token", this.token.value);
+      this.router.navigate(['/homepage']);
     }
   }
 

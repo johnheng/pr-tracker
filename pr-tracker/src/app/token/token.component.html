@@ -1,3 +1,6 @@
-<p>
-  token works!
-</p>
+<mat-form-field appearance="outline">
+  <mat-label>Outline form field</mat-label>
+  <input matInput placeholder="Input" [formControl]="token">
+  <mat-hint>https://github.com/settings/tokens</mat-hint>
+</mat-form-field>
+<button mat-raised-button color="primary" (click)="submit()">Cancel</button>
