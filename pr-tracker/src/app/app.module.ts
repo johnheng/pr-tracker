@@ -9,13 +9,15 @@ import { EventPageComponent } from './event-page/event-page.component';
 import { PopupComponent } from './popup/popup.component';
 
 import { MaterialModule } from './shared/material.module';
+import { TokenComponent } from './token/token.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomepageComponent,
     EventPageComponent,
-    PopupComponent
+    PopupComponent,
+    TokenComponent
   ],
   imports: [
     BrowserModule,
