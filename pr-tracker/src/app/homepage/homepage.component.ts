@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { GithubService } from '../services/github.service';
+import { forkJoin, Observable, of } from 'rxjs';
+import { flatMap, concatMap, combineLatest, } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-homepage',
@@ -7,18 +10,26 @@ import { GithubService } from '../services/github.service';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-  selectedRepo: string = "Api.CampaignManagement";
-  repos: any;
-  pulls: any;
+  selectedRepos: string[] = ["Api.CampaignManagement", "Edge.Marketplace", "Api.Marketplace"];
+  repos: any[];
   constructor(public githubService: GithubService) { }
 
   ngOnInit() {
-    this.githubService.getRepos().subscribe(x => this.repos = x);
-    this.githubService.getPulls(this.selectedRepo).subscribe(x => { this.pulls = x });
-  }
-
-  selectRepo(repo) {
-    this.selectedRepo = repo;
-    this.githubService.getPulls(this.selectedRepo).subscribe(x => { this.pulls = x });
+    forkJoin(this.selectedRepos
+      .map(repoName => {
+        return this.githubService.getRepoInfo(repoName)
+          .pipe(flatMap(
+            repo => {
+              return this.githubService.getPulls(repoName)
+                .pipe(
+                  flatMap(
+                    pulls => of({ info: repo, pulls: pulls })
+                  )
+                )
+            }
+          )
+          )
+      })
+    ).subscribe(x => this.repos = x);
   }
 }

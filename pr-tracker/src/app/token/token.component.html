@@ -1,7 +1,7 @@
 <div>
   <mat-form-field appearance="outline">
     <mat-label>GitHub OAuth 2.0 Token</mat-label>
-    <input matInput [formControl]="token">
+    <input matInput [formControl]="token" type="password">
     <mat-hint>https://github.com/settings/tokens</mat-hint>
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="submit()">Auth</button>

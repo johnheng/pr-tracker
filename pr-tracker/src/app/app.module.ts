@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GithubService } from './services/github.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth.service';
+import {TimeAgoPipe} from 'time-ago-pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AuthInterceptor } from './auth.service';
     HomepageComponent,
     EventPageComponent,
     PopupComponent,
-    TokenComponent
+    TokenComponent,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,
