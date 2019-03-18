@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Test Extension",
+    "name": "GitHub PR Tracker",
     "version": "1.0.0",
     "permissions": [
         "tabs",
@@ -11,7 +11,7 @@
         "persistent": false
     },
     "browser_action": {
-        "default_title": "Homepage!",
+        "default_title": "GitHub PR Tracker",
         "default_popup": "index.html#/homepage"
     },
     "icons": {
