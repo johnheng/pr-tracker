@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,21 +10,21 @@ import { Router } from '@angular/router';
 export class TokenComponent implements OnInit {
 
   constructor(private router: Router) { }
-
-  token: FormControl = new FormControl();
-  repos: FormControl = new FormControl();
+  tokenForm: FormGroup;
 
   ngOnInit() {
-
+    this.tokenForm = new FormGroup({
+      'token': new FormControl("", [Validators.required]),
+      'repos': new FormControl("", [Validators.required])
+    });
   }
 
   submit() {
-    console.log(this.token.value);
-    if (this.token.value != null && this.repos.value != null) {
-      localStorage.setItem("token", this.token.value);
-      localStorage.setItem("repos", this.repos.value);
+    console.log(this.tokenForm.getRawValue());
+    if (this.tokenForm.valid) {
+      localStorage.setItem("token", this.tokenForm.get("token").value);
+      localStorage.setItem("repos", this.tokenForm.get("repos").value);
       this.router.navigate(['/homepage']);
     }
   }
-
 }

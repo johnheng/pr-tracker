@@ -1,19 +1,21 @@
 <div>
-  <mat-form-field appearance="outline">
-    <mat-label>Repos</mat-label>
-    <textarea rows="6" matInput [formControl]="repos"></textarea>
-    <mat-hint>Comma-separated repos, "octokit/Repo1, octokit/Repo2"</mat-hint>
-    <mat-error *ngIf="repos.hasError('required')">
-      * Required
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field appearance="outline">
-    <mat-label>GitHub OAuth 2.0 Token</mat-label>
-    <input matInput [formControl]="token" type="password">
-    <mat-hint>https://github.com/settings/tokens</mat-hint>
-  </mat-form-field>
-  <mat-error *ngIf="token.hasError('required')">
-    * Required
-  </mat-error>
-  <button mat-raised-button color="primary" (click)="submit()">Auth</button>
+  <form [formGroup]="tokenForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Repos</mat-label>
+      <textarea rows="6" matInput formControlName="repos"></textarea>
+      <mat-hint>Comma-separated repos, "octokit/Repo1, octokit/Repo2"</mat-hint>
+      <mat-error *ngIf="tokenForm.get('repos').hasError('required')">
+        * Required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>GitHub OAuth 2.0 Token</mat-label>
+      <input matInput formControlName="token" type="password">
+      <mat-hint>https://github.com/settings/tokens</mat-hint>
+      <mat-error *ngIf="tokenForm.get('token').hasError('required')">
+        * Required
+      </mat-error>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="submit()">Auth</button>
+  </form>
 </div>
