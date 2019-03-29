@@ -8,7 +8,7 @@
   </mat-card>
 </div> -->
 <div *ngFor="let repo of repos">
-  <mat-card>
+  <mat-card *ngIf="repo.info != null">
     <mat-card-header>
       <mat-card-title>{{repo.info.name}}</mat-card-title>
       <mat-card-subtitle>{{repo.info.owner.login}}</mat-card-subtitle>
@@ -33,6 +33,9 @@
         </button>
       </a>
     </mat-card-actions>
+  </mat-card>
+  <mat-card *ngIf="repo.info == null">
+    {{repo.name}} was either not found or you were not authorized to view it.
   </mat-card>
 </div>
 <div class="loader" *ngIf="loading">

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import { throwError as observableThrowError, Observable } from 'rxjs';
+import { throwError as observableThrowError, Observable, of } from 'rxjs';
 import { catchError } from "rxjs/internal/operators/catchError";
 import { map, take } from "rxjs/operators"
 
@@ -14,14 +14,14 @@ export class GithubService {
 
   getRepoInfo(repo): Observable<any> {
     return this.http.get<any>(`https://api.github.com/repos/${repo}`)
-      .pipe(catchError((error: any) => error.json));
+      .pipe(catchError((error: any) => of(error.json)));
   }
 
   getPulls(repo: string): Observable<any> {
     return this.http.get<any>(`https://api.github.com/repos/${repo}/pulls`)
       .pipe(
         map((d) => d),
-        catchError((error: any) => error.json)
+        catchError((error: any) => of(error.json))
       );
   }
 }

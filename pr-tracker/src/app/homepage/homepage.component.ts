@@ -32,7 +32,7 @@ export class HomepageComponent implements OnInit {
               return this.githubService.getPulls(repoName)
                 .pipe(
                   flatMap(
-                    pulls => of({ info: repo, pulls: pulls })
+                    pulls => of({ name: repoName, info: repo ? repo : null, pulls: pulls ? pulls : null })
                   )
                 )
             }
@@ -40,6 +40,7 @@ export class HomepageComponent implements OnInit {
           )
       })
     ).subscribe(x => {
+      console.log(x);
       this.repos = x;
       setTimeout(() => this.loading = false, 200)
     });
