@@ -12,13 +12,18 @@
     <mat-card-header>
       <mat-card-title>{{repo.info.name}}</mat-card-title>
       <mat-card-subtitle>{{repo.info.owner.login}}</mat-card-subtitle>
+      <a href="{{repo.info.html_url}}" target="_blank">
+        <button mat-raised-button color="accent">
+          Open repo
+        </button>
+      </a>
     </mat-card-header>
     <mat-card-content>
       <ng-container *ngIf="repo.pulls.length > 0; else empty">
         <div class="pull" *ngFor="let pull of repo.pulls">
           <a href="{{pull.html_url}}" target="_blank">
             <button mat-raised-button color="primary">{{pull.title}}</button>
-            <p>#{{pull.number}} opened {{pull.created_at | timeAgo}}</p>
+            <p>#{{pull.number}} opened by {{pull.user.login}} {{pull.created_at | timeAgo}}</p>
           </a>
         </div>
       </ng-container>
@@ -26,13 +31,6 @@
         There are no active pull requests.
       </ng-template>
     </mat-card-content>
-    <mat-card-actions align="end">
-      <a href="{{repo.info.html_url}}" target="_blank">
-        <button mat-raised-button color="accent">
-          Open repo
-        </button>
-      </a>
-    </mat-card-actions>
   </mat-card>
   <mat-card *ngIf="repo.info == null">
     {{repo.name}} was either not found or you were not authorized to view it.

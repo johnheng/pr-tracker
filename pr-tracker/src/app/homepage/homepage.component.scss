@@ -1,9 +1,14 @@
 mat-card {
     margin-bottom: 10px;
-}
 
-mat-card-header-text {
-    margin: 0;
+    mat-card-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+    }
+    
+    mat-card-header-text {
+        margin: 0;
+    }
 }
 
 .pull {
@@ -50,9 +55,9 @@ mat-card-actions button {
     left: 0;
     bottom: 0;
     right: 0;
-  }
-  
-  .loader:before {
+}
+
+.loader:before {
     content: '';
     display: block;
     position: fixed;
@@ -62,15 +67,4 @@ mat-card-actions button {
     height: 100%;
     min-height: 200px;
     background-color: rgba(0,0,0,0.1);
-  }
-
-  .mat-card>.mat-card-actions {
-    margin: 0;
-    padding: 8px 0;
-    
-    &:last-child
-    {
-        margin-bottom: 0px;
-        padding-bottom: 0px;
-    }
 }

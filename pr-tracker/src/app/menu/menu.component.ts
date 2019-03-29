@@ -25,6 +25,9 @@ export class MenuComponent implements OnInit {
   }
 
   openDialog(): void {
+    this.token = localStorage.getItem("token");
+    this.repos = localStorage.getItem("repos");
+
     const dialogRef = this.dialog.open(SettingsComponent, {
       maxWidth: '450px',
       data: { token: this.token, repos: this.repos }
