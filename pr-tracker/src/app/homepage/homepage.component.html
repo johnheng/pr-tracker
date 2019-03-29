@@ -1,6 +1,6 @@
 <div class="nav grid">
   <h1>Github PR Tracker</h1>
-  <app-menu></app-menu>
+  <app-menu (refresh)="refresh()"></app-menu>
 </div>
 <div *ngFor="let repo of repos">
   <mat-card>
@@ -29,4 +29,7 @@
       </a>
     </mat-card-actions>
   </mat-card>
+</div>
+<div class="loader" *ngIf="loading">
+  <mat-spinner></mat-spinner>
 </div>

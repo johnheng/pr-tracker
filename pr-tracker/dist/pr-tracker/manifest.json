@@ -13,7 +13,7 @@
         "default_popup": "index.html#/homepage"
     },
     "icons": {
-        "19": "assets/icon.png"
+        "main": "assets/icon.png"
     },
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

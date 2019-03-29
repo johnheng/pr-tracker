@@ -12,9 +12,16 @@ import { flatMap, concatMap, combineLatest, } from 'rxjs/operators';
 export class HomepageComponent implements OnInit {
   selectedRepos: string[] = ["Api.CampaignManagement", "Edge.Marketplace", "Api.Marketplace"];
   repos: any[];
+  loading: boolean = false;
+
   constructor(public githubService: GithubService) { }
 
   ngOnInit() {
+    this.refresh();
+  }
+
+  refresh() {
+    this.loading = true;
     forkJoin(this.selectedRepos
       .map(repoName => {
         return this.githubService.getRepoInfo(repoName)
@@ -30,6 +37,9 @@ export class HomepageComponent implements OnInit {
           )
           )
       })
-    ).subscribe(x => this.repos = x);
+    ).subscribe(x => {
+      this.repos = x;
+      setTimeout(() => this.loading = false, 200)
+    });
   }
 }
