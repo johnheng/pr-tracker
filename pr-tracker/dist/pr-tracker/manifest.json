@@ -3,12 +3,10 @@
     "name": "GitHub PR Tracker",
     "version": "1.0.0",
     "permissions": [
-        "tabs",
-        "activeTab"
     ],
     "background": {
         "page": "index.html#/homepage",
-        "persistent": false
+        "persistent": true
     },
     "browser_action": {
         "default_title": "GitHub PR Tracker",

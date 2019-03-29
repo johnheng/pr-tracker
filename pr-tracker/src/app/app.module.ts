@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconRegistry } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,7 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GithubService } from './services/github.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth.service';
-import {TimeAgoPipe} from 'time-ago-pipe';
+import { TimeAgoPipe } from 'time-ago-pipe';
+import { MenuComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     EventPageComponent,
     PopupComponent,
     TokenComponent,
-    TimeAgoPipe
+    TimeAgoPipe,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +42,9 @@ import {TimeAgoPipe} from 'time-ago-pipe';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    },],
+    },
+    MatIconRegistry
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

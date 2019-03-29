@@ -28,3 +28,9 @@ mat-card-header-text {
 mat-card-actions button {
     text-align: right;
 }
+
+.nav.grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+}
