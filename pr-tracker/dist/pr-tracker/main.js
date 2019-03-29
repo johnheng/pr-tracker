@@ -184,7 +184,8 @@ var AppModule = /** @class */ (function () {
                 _popup_popup_component__WEBPACK_IMPORTED_MODULE_9__["PopupComponent"],
                 _token_token_component__WEBPACK_IMPORTED_MODULE_11__["TokenComponent"],
                 time_ago_pipe__WEBPACK_IMPORTED_MODULE_16__["TimeAgoPipe"],
-                _menu_menu_component__WEBPACK_IMPORTED_MODULE_17__["MenuComponent"]
+                _menu_menu_component__WEBPACK_IMPORTED_MODULE_17__["MenuComponent"],
+                _menu_menu_component__WEBPACK_IMPORTED_MODULE_17__["SettingsComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -201,9 +202,11 @@ var AppModule = /** @class */ (function () {
                     useClass: _auth_service__WEBPACK_IMPORTED_MODULE_15__["AuthInterceptor"],
                     multi: true
                 },
+                { provide: _angular_material__WEBPACK_IMPORTED_MODULE_4__["MAT_DIALOG_DEFAULT_OPTIONS"], useValue: { hasBackdrop: false } },
                 _angular_material__WEBPACK_IMPORTED_MODULE_4__["MatIconRegistry"]
             ],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]]
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_6__["AppComponent"]],
+            entryComponents: [_menu_menu_component__WEBPACK_IMPORTED_MODULE_17__["SettingsComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -380,7 +383,7 @@ var EventPageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"nav grid\">\r\n  <h1>Github PR Tracker</h1>\r\n  <app-menu></app-menu>\r\n</div>\r\n<div *ngFor=\"let repo of repos\">\r\n  <mat-card>\r\n    <mat-card-header>\r\n      <mat-card-title>{{repo.info.name}}</mat-card-title>\r\n      <mat-card-subtitle>{{repo.info.owner.login}}</mat-card-subtitle>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <ng-container *ngIf=\"repo.pulls.length > 0; else empty\">\r\n        <div class=\"pull\" *ngFor=\"let pull of repo.pulls\">\r\n          <a href=\"{{pull.html_url}}\" target=\"_blank\">\r\n            <button mat-raised-button color=\"primary\">{{pull.title}}</button>\r\n            <p>#{{pull.number}} opened {{pull.created_at | timeAgo}}</p>\r\n          </a>\r\n        </div>\r\n      </ng-container>\r\n      <ng-template #empty>\r\n        There are no active pull requests.\r\n      </ng-template>\r\n    </mat-card-content>\r\n    <mat-card-actions align=\"end\">\r\n      <a href=\"{{repo.info.html_url}}\" target=\"_blank\">\r\n        <button mat-raised-button color=\"accent\">\r\n          Open repo\r\n        </button>\r\n      </a>\r\n    </mat-card-actions>\r\n  </mat-card>\r\n</div>"
+module.exports = "<div class=\"nav grid\">\r\n  <h1>Github PR Tracker</h1>\r\n  <app-menu (refresh)=\"refresh()\"></app-menu>\r\n</div>\r\n<div *ngIf=\"repos.length == 0\">\r\n  <mat-card>\r\n    No repos were found, please update them in the settings.\r\n  </mat-card>\r\n</div>\r\n<div *ngFor=\"let repo of repos\">\r\n  <mat-card>\r\n    <mat-card-header>\r\n      <mat-card-title>{{repo.info.name}}</mat-card-title>\r\n      <mat-card-subtitle>{{repo.info.owner.login}}</mat-card-subtitle>\r\n    </mat-card-header>\r\n    <mat-card-content>\r\n      <ng-container *ngIf=\"repo.pulls.length > 0; else empty\">\r\n        <div class=\"pull\" *ngFor=\"let pull of repo.pulls\">\r\n          <a href=\"{{pull.html_url}}\" target=\"_blank\">\r\n            <button mat-raised-button color=\"primary\">{{pull.title}}</button>\r\n            <p>#{{pull.number}} opened {{pull.created_at | timeAgo}}</p>\r\n          </a>\r\n        </div>\r\n      </ng-container>\r\n      <ng-template #empty>\r\n        There are no active pull requests.\r\n      </ng-template>\r\n    </mat-card-content>\r\n    <mat-card-actions align=\"end\">\r\n      <a href=\"{{repo.info.html_url}}\" target=\"_blank\">\r\n        <button mat-raised-button color=\"accent\">\r\n          Open repo\r\n        </button>\r\n      </a>\r\n    </mat-card-actions>\r\n  </mat-card>\r\n</div>\r\n<div class=\"loader\" *ngIf=\"loading\">\r\n  <mat-spinner></mat-spinner>\r\n</div>"
 
 /***/ }),
 
@@ -391,7 +394,7 @@ module.exports = "<div class=\"nav grid\">\r\n  <h1>Github PR Tracker</h1>\r\n  
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "mat-card {\n  margin-bottom: 10px; }\n\nmat-card-header-text {\n  margin: 0; }\n\n.pull {\n  margin: 5px 0px; }\n\n.pull button.mat-raised-button.mat-primary {\n    display: block;\n    width: 100%; }\n\n.pull p {\n    text-align: right;\n    font-size: 10px;\n    margin: 3px 0 0 0; }\n\n.pull a {\n    text-decoration: none; }\n\nmat-card-actions button {\n  text-align: right; }\n\n.nav.grid {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  align-items: center; }\n\n.nav.grid h1 {\n    margin: 5px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaG9tZXBhZ2UvQzpcXFVzZXJzXFxqb2huLmhlbmdcXERvY3VtZW50c1xcUmVwb3NcXEhhY2tkYXlcXHByLXRyYWNrZXJcXHByLXRyYWNrZXIvc3JjXFxhcHBcXGhvbWVwYWdlXFxob21lcGFnZS5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLG1CQUFtQixFQUFBOztBQUd2QjtFQUNJLFNBQVMsRUFBQTs7QUFHYjtFQUNJLGVBQWUsRUFBQTs7QUFEbkI7SUFJUSxjQUFjO0lBQ2QsV0FBVyxFQUFBOztBQUxuQjtJQVNRLGlCQUFpQjtJQUNqQixlQUFlO0lBQ2YsaUJBQWlCLEVBQUE7O0FBWHpCO0lBZVEscUJBQXFCLEVBQUE7O0FBSTdCO0VBQ0ksaUJBQWlCLEVBQUE7O0FBR3JCO0VBQ0ksYUFBYTtFQUNiLCtCQUErQjtFQUMvQixtQkFBbUIsRUFBQTs7QUFIdkI7SUFNUSxXQUFXLEVBQUEiLCJmaWxlIjoic3JjL2FwcC9ob21lcGFnZS9ob21lcGFnZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIm1hdC1jYXJkIHtcclxuICAgIG1hcmdpbi1ib3R0b206IDEwcHg7XHJcbn1cclxuXHJcbm1hdC1jYXJkLWhlYWRlci10ZXh0IHtcclxuICAgIG1hcmdpbjogMDtcclxufVxyXG5cclxuLnB1bGwge1xyXG4gICAgbWFyZ2luOiA1cHggMHB4O1xyXG5cclxuICAgIGJ1dHRvbi5tYXQtcmFpc2VkLWJ1dHRvbi5tYXQtcHJpbWFyeSB7XHJcbiAgICAgICAgZGlzcGxheTogYmxvY2s7XHJcbiAgICAgICAgd2lkdGg6IDEwMCU7XHJcbiAgICB9XHJcblxyXG4gICAgcCB7XHJcbiAgICAgICAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbiAgICAgICAgZm9udC1zaXplOiAxMHB4O1xyXG4gICAgICAgIG1hcmdpbjogM3B4IDAgMCAwO1xyXG4gICAgfVxyXG5cclxuICAgIGEge1xyXG4gICAgICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTtcclxuICAgIH1cclxufVxyXG5cclxubWF0LWNhcmQtYWN0aW9ucyBidXR0b24ge1xyXG4gICAgdGV4dC1hbGlnbjogcmlnaHQ7XHJcbn1cclxuXHJcbi5uYXYuZ3JpZCB7XHJcbiAgICBkaXNwbGF5OiBncmlkO1xyXG4gICAgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgYXV0bztcclxuICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7XHJcblxyXG4gICAgaDEge1xyXG4gICAgICAgIG1hcmdpbjogNXB4O1xyXG4gICAgfVxyXG59Il19 */"
+module.exports = "mat-card {\n  margin-bottom: 10px; }\n\nmat-card-header-text {\n  margin: 0; }\n\n.pull {\n  margin: 5px 0px; }\n\n.pull button.mat-raised-button.mat-primary {\n    display: block;\n    width: 100%; }\n\n.pull p {\n    text-align: right;\n    font-size: 10px;\n    margin: 3px 0 0 0; }\n\n.pull a {\n    text-decoration: none; }\n\nmat-card-actions button {\n  text-align: right; }\n\n.nav.grid {\n  display: grid;\n  grid-template-columns: 1fr auto;\n  align-items: center; }\n\n.nav.grid h1 {\n    margin: 5px; }\n\n.loader {\n  position: fixed;\n  z-index: 999;\n  height: 2em;\n  width: 2em;\n  overflow: show;\n  margin: auto;\n  top: 0;\n  left: 0;\n  bottom: 0;\n  right: 0; }\n\n.loader:before {\n  content: '';\n  display: block;\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.1); }\n\n.mat-card > .mat-card-actions {\n  margin: 0;\n  padding: 8px 0; }\n\n.mat-card > .mat-card-actions:last-child {\n    margin-bottom: 0px;\n    padding-bottom: 0px; }\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaG9tZXBhZ2UvQzpcXFVzZXJzXFxqb2huLmhlbmdcXERvY3VtZW50c1xcUmVwb3NcXEhhY2tkYXlcXHByLXRyYWNrZXJcXHByLXRyYWNrZXIvc3JjXFxhcHBcXGhvbWVwYWdlXFxob21lcGFnZS5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLG1CQUFtQixFQUFBOztBQUd2QjtFQUNJLFNBQVMsRUFBQTs7QUFHYjtFQUNJLGVBQWUsRUFBQTs7QUFEbkI7SUFJUSxjQUFjO0lBQ2QsV0FBVyxFQUFBOztBQUxuQjtJQVNRLGlCQUFpQjtJQUNqQixlQUFlO0lBQ2YsaUJBQWlCLEVBQUE7O0FBWHpCO0lBZVEscUJBQXFCLEVBQUE7O0FBSTdCO0VBQ0ksaUJBQWlCLEVBQUE7O0FBR3JCO0VBQ0ksYUFBYTtFQUNiLCtCQUErQjtFQUMvQixtQkFBbUIsRUFBQTs7QUFIdkI7SUFNUSxXQUFXLEVBQUE7O0FBSW5CO0VBQ0ksZUFBZTtFQUNmLFlBQVk7RUFDWixXQUFXO0VBQ1gsVUFBVTtFQUNWLGNBQWM7RUFDZCxZQUFZO0VBQ1osTUFBTTtFQUNOLE9BQU87RUFDUCxTQUFTO0VBQ1QsUUFBUSxFQUFBOztBQUdWO0VBQ0UsV0FBVztFQUNYLGNBQWM7RUFDZCxlQUFlO0VBQ2YsTUFBTTtFQUNOLE9BQU87RUFDUCxXQUFXO0VBQ1gsWUFBWTtFQUNaLG9DQUFpQyxFQUFBOztBQUduQztFQUNFLFNBQVM7RUFDVCxjQUFjLEVBQUE7O0FBRmhCO0lBTU0sa0JBQWtCO0lBQ2xCLG1CQUFtQixFQUFBIiwiZmlsZSI6InNyYy9hcHAvaG9tZXBhZ2UvaG9tZXBhZ2UuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyJtYXQtY2FyZCB7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAxMHB4O1xyXG59XHJcblxyXG5tYXQtY2FyZC1oZWFkZXItdGV4dCB7XHJcbiAgICBtYXJnaW46IDA7XHJcbn1cclxuXHJcbi5wdWxsIHtcclxuICAgIG1hcmdpbjogNXB4IDBweDtcclxuXHJcbiAgICBidXR0b24ubWF0LXJhaXNlZC1idXR0b24ubWF0LXByaW1hcnkge1xyXG4gICAgICAgIGRpc3BsYXk6IGJsb2NrO1xyXG4gICAgICAgIHdpZHRoOiAxMDAlO1xyXG4gICAgfVxyXG5cclxuICAgIHAge1xyXG4gICAgICAgIHRleHQtYWxpZ246IHJpZ2h0O1xyXG4gICAgICAgIGZvbnQtc2l6ZTogMTBweDtcclxuICAgICAgICBtYXJnaW46IDNweCAwIDAgMDtcclxuICAgIH1cclxuXHJcbiAgICBhIHtcclxuICAgICAgICB0ZXh0LWRlY29yYXRpb246IG5vbmU7XHJcbiAgICB9XHJcbn1cclxuXHJcbm1hdC1jYXJkLWFjdGlvbnMgYnV0dG9uIHtcclxuICAgIHRleHQtYWxpZ246IHJpZ2h0O1xyXG59XHJcblxyXG4ubmF2LmdyaWQge1xyXG4gICAgZGlzcGxheTogZ3JpZDtcclxuICAgIGdyaWQtdGVtcGxhdGUtY29sdW1uczogMWZyIGF1dG87XHJcbiAgICBhbGlnbi1pdGVtczogY2VudGVyO1xyXG5cclxuICAgIGgxIHtcclxuICAgICAgICBtYXJnaW46IDVweDtcclxuICAgIH1cclxufVxyXG5cclxuLmxvYWRlciB7XHJcbiAgICBwb3NpdGlvbjogZml4ZWQ7XHJcbiAgICB6LWluZGV4OiA5OTk7XHJcbiAgICBoZWlnaHQ6IDJlbTtcclxuICAgIHdpZHRoOiAyZW07XHJcbiAgICBvdmVyZmxvdzogc2hvdztcclxuICAgIG1hcmdpbjogYXV0bztcclxuICAgIHRvcDogMDtcclxuICAgIGxlZnQ6IDA7XHJcbiAgICBib3R0b206IDA7XHJcbiAgICByaWdodDogMDtcclxuICB9XHJcbiAgXHJcbiAgLmxvYWRlcjpiZWZvcmUge1xyXG4gICAgY29udGVudDogJyc7XHJcbiAgICBkaXNwbGF5OiBibG9jaztcclxuICAgIHBvc2l0aW9uOiBmaXhlZDtcclxuICAgIHRvcDogMDtcclxuICAgIGxlZnQ6IDA7XHJcbiAgICB3aWR0aDogMTAwJTtcclxuICAgIGhlaWdodDogMTAwJTtcclxuICAgIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMCwwLDAsMC4xKTtcclxuICB9XHJcblxyXG4gIC5tYXQtY2FyZD4ubWF0LWNhcmQtYWN0aW9ucyB7XHJcbiAgICBtYXJnaW46IDA7XHJcbiAgICBwYWRkaW5nOiA4cHggMDtcclxuICAgIFxyXG4gICAgJjpsYXN0LWNoaWxkXHJcbiAgICB7XHJcbiAgICAgICAgbWFyZ2luLWJvdHRvbTogMHB4O1xyXG4gICAgICAgIHBhZGRpbmctYm90dG9tOiAwcHg7XHJcbiAgICB9XHJcbn0iXX0= */"
 
 /***/ }),
 
@@ -418,10 +421,17 @@ __webpack_require__.r(__webpack_exports__);
 var HomepageComponent = /** @class */ (function () {
     function HomepageComponent(githubService) {
         this.githubService = githubService;
-        this.selectedRepos = ["Api.CampaignManagement", "Edge.Marketplace", "Api.Marketplace"];
+        this.selectedRepos = [];
+        this.loading = false;
     }
     HomepageComponent.prototype.ngOnInit = function () {
+        this.selectedRepos = localStorage.getItem("repos").replace(/\s/g, "").split(",");
+        this.refresh();
+    };
+    HomepageComponent.prototype.refresh = function () {
         var _this = this;
+        this.loading = true;
+        this.selectedRepos = localStorage.getItem("repos").replace(/\s/g, "").split(",");
         Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["forkJoin"])(this.selectedRepos
             .map(function (repoName) {
             return _this.githubService.getRepoInfo(repoName)
@@ -429,7 +439,10 @@ var HomepageComponent = /** @class */ (function () {
                 return _this.githubService.getPulls(repoName)
                     .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["flatMap"])(function (pulls) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["of"])({ info: repo, pulls: pulls }); }));
             }));
-        })).subscribe(function (x) { return _this.repos = x; });
+        })).subscribe(function (x) {
+            _this.repos = x;
+            setTimeout(function () { return _this.loading = false; }, 200);
+        });
     };
     HomepageComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -453,7 +466,7 @@ var HomepageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<button mat-icon-button [matMenuTriggerFor]=\"menu\" aria-label=\"Example icon-button with a menu\">\n  <mat-icon>more_vert</mat-icon>\n</button>\n<mat-menu #menu=\"matMenu\">\n  <button mat-menu-item>\n    <mat-icon>refresh</mat-icon>\n    <span>Refresh</span>\n  </button>\n  <button mat-menu-item>\n    <mat-icon>settings</mat-icon>\n    <span>Settings</span>\n  </button>\n</mat-menu>"
+module.exports = "<button mat-icon-button [matMenuTriggerFor]=\"menu\" aria-label=\"Example icon-button with a menu\">\n  <mat-icon>more_vert</mat-icon>\n</button>\n<mat-menu #menu=\"matMenu\">\n  <button mat-menu-item (click)=\"refresh.emit()\">\n    <mat-icon>refresh</mat-icon>\n    <span>Refresh</span>\n  </button>\n  <button (click)=\"openDialog()\" mat-menu-item>\n    <mat-icon>settings</mat-icon>\n    <span>Settings</span>\n  </button>\n</mat-menu>"
 
 /***/ }),
 
@@ -472,35 +485,88 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*!****************************************!*\
   !*** ./src/app/menu/menu.component.ts ***!
   \****************************************/
-/*! exports provided: MenuComponent */
+/*! exports provided: MenuComponent, SettingsComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MenuComponent", function() { return MenuComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingsComponent", function() { return SettingsComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+
 
 
 var MenuComponent = /** @class */ (function () {
-    function MenuComponent() {
+    function MenuComponent(dialog) {
+        this.dialog = dialog;
+        this.refresh = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
     }
     MenuComponent.prototype.ngOnInit = function () {
+        this.token = localStorage.getItem("token");
+        this.repos = localStorage.getItem("repos");
     };
-    MenuComponent.prototype.refresh = function () {
+    MenuComponent.prototype.openDialog = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(SettingsComponent, {
+            maxWidth: '450px',
+            data: { token: this.token, repos: this.repos }
+        });
+        dialogRef.afterClosed().subscribe(function (result) {
+            if (result != null) {
+                localStorage.setItem("token", result.token);
+                localStorage.setItem("repos", result.repos);
+                _this.refresh.emit();
+            }
+        });
     };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], MenuComponent.prototype, "refresh", void 0);
     MenuComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-menu',
             template: __webpack_require__(/*! ./menu.component.html */ "./src/app/menu/menu.component.html"),
             styles: [__webpack_require__(/*! ./menu.component.scss */ "./src/app/menu/menu.component.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"]])
     ], MenuComponent);
     return MenuComponent;
 }());
 
+var SettingsComponent = /** @class */ (function () {
+    function SettingsComponent(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+    }
+    SettingsComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    SettingsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'settings',
+            template: __webpack_require__(/*! ./settings.html */ "./src/app/menu/settings.html")
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__param"](1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
+    ], SettingsComponent);
+    return SettingsComponent;
+}());
 
+
+
+/***/ }),
+
+/***/ "./src/app/menu/settings.html":
+/*!************************************!*\
+  !*** ./src/app/menu/settings.html ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Settings</h1>\r\n<div mat-dialog-content>\r\n  <mat-form-field appearance=\"outline\">\r\n    <mat-label>Repos</mat-label>\r\n    <textarea rows=\"6\" matInput [(ngModel)]=\"data.repos\"></textarea>\r\n    <mat-hint>Comma-separated repos, \"octokit/Repo1, octokit/Repo2\"</mat-hint>\r\n  </mat-form-field>\r\n  <mat-form-field appearance=\"outline\">\r\n    <mat-label>GitHub OAuth 2.0 Token</mat-label>\r\n    <input type=\"password\" matInput [(ngModel)]=\"data.token\">\r\n    <mat-hint>https://github.com/settings/tokens</mat-hint>\r\n  </mat-form-field>\r\n</div>\r\n<div mat-dialog-actions>\r\n  <button mat-button (click)=\"onNoClick()\">Cancel</button>\r\n  <button mat-raised-button color=\"primary\" [mat-dialog-close]=\"data\" cdkFocusInitial>Save</button>\r\n</div>"
 
 /***/ }),
 
@@ -587,17 +653,12 @@ var GithubService = /** @class */ (function () {
     function GithubService(http) {
         this.http = http;
     }
-    //#region tax credits
-    GithubService.prototype.getRepos = function () {
-        return this.http.get("https://api.github.com/orgs/snagajob/repos")
-            .pipe(Object(rxjs_internal_operators_catchError__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error.json); }));
-    };
     GithubService.prototype.getRepoInfo = function (repo) {
-        return this.http.get("https://api.github.com/repos/Snagajob/" + repo)
+        return this.http.get("https://api.github.com/repos/" + repo)
             .pipe(Object(rxjs_internal_operators_catchError__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error.json); }));
     };
     GithubService.prototype.getPulls = function (repo) {
-        return this.http.get("https://api.github.com/repos/Snagajob/" + repo + "/pulls")
+        return this.http.get("https://api.github.com/repos/" + repo + "/pulls")
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (d) { return d; }), Object(rxjs_internal_operators_catchError__WEBPACK_IMPORTED_MODULE_4__["catchError"])(function (error) { return Object(rxjs__WEBPACK_IMPORTED_MODULE_3__["throwError"])(error.json); }));
     };
     GithubService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -643,6 +704,8 @@ var MaterialModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatChipsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatMenuModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"]
             ],
             exports: [
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatCardModule"],
@@ -653,6 +716,8 @@ var MaterialModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatChipsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatMenuModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatIconModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatProgressSpinnerModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogModule"]
             ]
         })
     ], MaterialModule);
@@ -670,7 +735,7 @@ var MaterialModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\r\n  <mat-form-field appearance=\"outline\">\r\n    <mat-label>GitHub OAuth 2.0 Token</mat-label>\r\n    <input matInput [formControl]=\"token\" type=\"password\">\r\n    <mat-hint>https://github.com/settings/tokens</mat-hint>\r\n  </mat-form-field>\r\n  <button mat-raised-button color=\"primary\" (click)=\"submit()\">Auth</button>\r\n</div>"
+module.exports = "<div>\r\n  <mat-form-field appearance=\"outline\">\r\n    <mat-label>Repos</mat-label>\r\n    <textarea rows=\"6\" matInput [formControl]=\"repos\"></textarea>\r\n    <mat-hint>Comma-separated repos, \"octokit/Repo1, octokit/Repo2\"</mat-hint>\r\n    <mat-error *ngIf=\"repos.hasError('required')\">\r\n      * Required\r\n    </mat-error>\r\n  </mat-form-field>\r\n  <mat-form-field appearance=\"outline\">\r\n    <mat-label>GitHub OAuth 2.0 Token</mat-label>\r\n    <input matInput [formControl]=\"token\" type=\"password\">\r\n    <mat-hint>https://github.com/settings/tokens</mat-hint>\r\n  </mat-form-field>\r\n  <mat-error *ngIf=\"token.hasError('required')\">\r\n    * Required\r\n  </mat-error>\r\n  <button mat-raised-button color=\"primary\" (click)=\"submit()\">Auth</button>\r\n</div>"
 
 /***/ }),
 
@@ -706,14 +771,16 @@ __webpack_require__.r(__webpack_exports__);
 var TokenComponent = /** @class */ (function () {
     function TokenComponent(router) {
         this.router = router;
-        this.token = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.token = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]("", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]);
+        this.repos = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]("", [_angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required]);
     }
     TokenComponent.prototype.ngOnInit = function () {
     };
     TokenComponent.prototype.submit = function () {
         console.log(this.token.value);
-        if (this.token.value != null) {
+        if (this.token.value != null && this.repos.value != null) {
             localStorage.setItem("token", this.token.value);
+            localStorage.setItem("repos", this.repos.value);
             this.router.navigate(['/homepage']);
         }
     };

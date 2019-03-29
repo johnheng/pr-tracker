@@ -2,8 +2,7 @@
     "manifest_version": 2,
     "name": "GitHub PR Tracker",
     "version": "1.0.0",
-    "permissions": [
-    ],
+    "permissions": [],
     "background": {
         "page": "index.html#/homepage",
         "persistent": true
@@ -13,7 +12,7 @@
         "default_popup": "index.html#/homepage"
     },
     "icons": {
-        "main": "assets/icon.png"
+        "19": "assets/icon.png"
     },
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

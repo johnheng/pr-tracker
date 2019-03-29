@@ -2,6 +2,11 @@
   <h1>Github PR Tracker</h1>
   <app-menu (refresh)="refresh()"></app-menu>
 </div>
+<!-- <div *ngIf="repos.length == 0">
+  <mat-card>
+    No repos were found, please update them in the settings.
+  </mat-card>
+</div> -->
 <div *ngFor="let repo of repos">
   <mat-card>
     <mat-card-header>
