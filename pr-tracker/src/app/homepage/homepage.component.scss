@@ -52,7 +52,6 @@ mat-card-actions button {
     right: 0;
   }
   
-  /* Transparent Overlay */
   .loader:before {
     content: '';
     display: block;
@@ -63,3 +62,14 @@ mat-card-actions button {
     height: 100%;
     background-color: rgba(0,0,0,0.1);
   }
+
+  .mat-card>.mat-card-actions {
+    margin: 0;
+    padding: 8px 0;
+    
+    &:last-child
+    {
+        margin-bottom: 0px;
+        padding-bottom: 0px;
+    }
+}

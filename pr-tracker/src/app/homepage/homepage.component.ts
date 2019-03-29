@@ -10,18 +10,20 @@ import { flatMap, concatMap, combineLatest, } from 'rxjs/operators';
   styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
-  selectedRepos: string[] = ["Api.CampaignManagement", "Edge.Marketplace", "Api.Marketplace"];
+  selectedRepos: string[] = [];
   repos: any[];
   loading: boolean = false;
 
   constructor(public githubService: GithubService) { }
 
   ngOnInit() {
+    this.selectedRepos = localStorage.getItem("repos").replace(/\s/g, "").split(",");
     this.refresh();
   }
 
   refresh() {
     this.loading = true;
+    this.selectedRepos = localStorage.getItem("repos").replace(/\s/g, "").split(",");
     forkJoin(this.selectedRepos
       .map(repoName => {
         return this.githubService.getRepoInfo(repoName)

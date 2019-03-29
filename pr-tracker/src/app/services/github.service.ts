@@ -12,21 +12,15 @@ export class GithubService {
     private http: HttpClient
   ) { }
 
-  //#region tax credits
-  getRepos(): Observable<any> {
-    return this.http.get<any>("https://api.github.com/orgs/snagajob/repos")
-      .pipe(catchError((error: any) => observableThrowError(error.json)));
-  }
-
   getRepoInfo(repo): Observable<any> {
-    return this.http.get<any>(`https://api.github.com/repos/Snagajob/${repo}`)
+    return this.http.get<any>(`https://api.github.com/repos/${repo}`)
       .pipe(catchError((error: any) => observableThrowError(error.json)));
   }
 
 
 
   getPulls(repo: string): Observable<any> {
-    return this.http.get<any>(`https://api.github.com/repos/Snagajob/${repo}/pulls`)
+    return this.http.get<any>(`https://api.github.com/repos/${repo}/pulls`)
       .pipe(
         map((d) => d),
         catchError((error: any) => observableThrowError(error.json))

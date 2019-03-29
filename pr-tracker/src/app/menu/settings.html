@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Settings</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Repos</mat-label>
+    <textarea rows="6" matInput [(ngModel)]="data.repos"></textarea>
+    <mat-hint>Comma-separated repos, "octokit/Repo1, octokit/Repo2"</mat-hint>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>GitHub OAuth 2.0 Token</mat-label>
+    <input type="password" matInput [(ngModel)]="data.token">
+    <mat-hint>https://github.com/settings/tokens</mat-hint>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button color="primary" [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

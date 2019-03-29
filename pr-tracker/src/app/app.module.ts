@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,7 +16,7 @@ import { GithubService } from './services/github.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth.service';
 import { TimeAgoPipe } from 'time-ago-pipe';
-import { MenuComponent } from './menu/menu.component';
+import { MenuComponent, SettingsComponent } from './menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { MenuComponent } from './menu/menu.component';
     PopupComponent,
     TokenComponent,
     TimeAgoPipe,
-    MenuComponent
+    MenuComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -43,8 +44,10 @@ import { MenuComponent } from './menu/menu.component';
       useClass: AuthInterceptor,
       multi: true
     },
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     MatIconRegistry
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [SettingsComponent]
 })
 export class AppModule { }
