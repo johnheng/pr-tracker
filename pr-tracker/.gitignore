@@ -38,6 +38,8 @@ speed-measure-plugin.json
 npm-debug.log
 yarn-error.log
 testem.log
+pr-tracker.crx
+pr-tracker.pem
 /typings
 
 # System Files
