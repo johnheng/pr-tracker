@@ -14,16 +14,14 @@ export class GithubService {
 
   getRepoInfo(repo): Observable<any> {
     return this.http.get<any>(`https://api.github.com/repos/${repo}`)
-      .pipe(catchError((error: any) => observableThrowError(error.json)));
+      .pipe(catchError((error: any) => error.json));
   }
-
-
 
   getPulls(repo: string): Observable<any> {
     return this.http.get<any>(`https://api.github.com/repos/${repo}/pulls`)
       .pipe(
         map((d) => d),
-        catchError((error: any) => observableThrowError(error.json))
+        catchError((error: any) => error.json)
       );
   }
 }
